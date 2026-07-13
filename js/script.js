@@ -48,6 +48,38 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   // ---------------------------------------------------------
+  // Lightbox dos cards de Golaço (amplia a imagem ao clicar)
+  // ---------------------------------------------------------
+  const golacoLightbox = document.getElementById('golacoLightbox');
+  const golacoLightboxImg = document.getElementById('golacoLightboxImg');
+  const golacoLightboxClose = document.getElementById('golacoLightboxClose');
+
+  function openGolacoLightbox(imgEl) {
+    if (!golacoLightbox || !imgEl) return;
+    golacoLightboxImg.src = imgEl.src;
+    golacoLightboxImg.alt = imgEl.alt || '';
+    golacoLightbox.classList.add('open');
+  }
+  function closeGolacoLightbox() {
+    if (!golacoLightbox) return;
+    golacoLightbox.classList.remove('open');
+    golacoLightboxImg.src = '';
+  }
+  document.querySelectorAll('.golaco-card').forEach(card => {
+    card.addEventListener('click', () => openGolacoLightbox(card.querySelector('img')));
+    card.addEventListener('keypress', e => {
+      if (e.key === 'Enter' || e.key === ' ') openGolacoLightbox(card.querySelector('img'));
+    });
+  });
+  if (golacoLightboxClose) golacoLightboxClose.addEventListener('click', closeGolacoLightbox);
+  if (golacoLightbox) golacoLightbox.addEventListener('click', e => {
+    if (e.target === golacoLightbox) closeGolacoLightbox();
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeGolacoLightbox();
+  });
+
+  // ---------------------------------------------------------
   // WhatsApp do gabinete — TROCAR pelo número real (formato 55DDNÚMERO)
   // ---------------------------------------------------------
   const GABINETE_WHATSAPP = '5532900000000'; // <-- placeholder, substituir
@@ -84,6 +116,34 @@ document.addEventListener('DOMContentLoaded', function () {
           bairroCidadeInput.value = '';
           bairroCidadeInput.placeholder = 'Não foi possível buscar — preencha manualmente';
           bairroCidadeInput.readOnly = false;
+        });
+    });
+  }
+
+  // CEP automático do formulário "Junte-se a Nós"
+  const cepCadastroInput = document.getElementById('cepCadastro');
+  const bairroCidadeCadastroInput = document.getElementById('bairroCidadeCadastro');
+
+  if (cepCadastroInput) {
+    cepCadastroInput.addEventListener('blur', function () {
+      const cep = cepCadastroInput.value.replace(/\D/g, '');
+      if (cep.length !== 8) return;
+      bairroCidadeCadastroInput.value = 'Buscando...';
+      fetch('https://viacep.com.br/ws/' + cep + '/json/')
+        .then(r => r.json())
+        .then(data => {
+          if (data.erro) {
+            bairroCidadeCadastroInput.value = '';
+            bairroCidadeCadastroInput.placeholder = 'CEP não encontrado — preencha manualmente';
+            bairroCidadeCadastroInput.readOnly = false;
+          } else {
+            bairroCidadeCadastroInput.value = (data.bairro ? data.bairro + ' — ' : '') + data.localidade + '/' + data.uf;
+          }
+        })
+        .catch(() => {
+          bairroCidadeCadastroInput.value = '';
+          bairroCidadeCadastroInput.placeholder = 'Não foi possível buscar — preencha manualmente';
+          bairroCidadeCadastroInput.readOnly = false;
         });
     });
   }
