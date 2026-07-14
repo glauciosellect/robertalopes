@@ -51,6 +51,39 @@ function fmtData(iso) {
   return new Date(iso).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' });
 }
 
+// ---------- PUBLICAR / DESPUBLICAR / EXCLUIR DEFINITIVO (genérico) ----------
+async function togglePublicado(table, id, novoValor, reload) {
+  const { error } = await sb.from(table).update({ publicado: novoValor }).eq('id', id);
+  if (error) { alert('Erro ao atualizar: ' + error.message); return; }
+  reload();
+}
+
+async function excluirDefinitivo(table, id, reload) {
+  if (!confirm('Excluir definitivamente? Essa ação não pode ser desfeita e o item some do histórico do painel.')) return;
+  const { error } = await sb.from(table).delete().eq('id', id);
+  if (error) { alert('Erro ao excluir: ' + error.message); return; }
+  reload();
+}
+
+function acoesPublicacao(table, id, publicado, reload) {
+  return publicado
+    ? `<button class="warn" data-unpub="${id}">Despublicar</button>`
+    : `<button class="ok" data-pub="${id}">Republicar</button>`;
+}
+
+function ligarAcoesPublicacao(lista, table, reload) {
+  lista.querySelectorAll('[data-unpub]').forEach(b => b.addEventListener('click', () => {
+    if (!confirm('Despublicar? O item sai do site, mas continua salvo aqui no painel.')) return;
+    togglePublicado(table, b.dataset.unpub, false, reload);
+  }));
+  lista.querySelectorAll('[data-pub]').forEach(b => b.addEventListener('click', () => {
+    togglePublicado(table, b.dataset.pub, true, reload);
+  }));
+  lista.querySelectorAll('[data-del]').forEach(b => b.addEventListener('click', () => {
+    excluirDefinitivo(table, b.dataset.del, reload);
+  }));
+}
+
 // ---------- NOTÍCIAS ----------
 async function carregarNoticias() {
   const { data, error } = await sb.from('noticias').select('*').order('created_at', { ascending: false });
@@ -61,26 +94,24 @@ async function carregarNoticias() {
     return;
   }
   data.forEach(n => {
+    const publicado = n.publicado !== false;
     const el = document.createElement('div');
-    el.className = 'admin-item';
+    el.className = 'admin-item' + (publicado ? '' : ' despublicado');
     el.innerHTML = `
       <div class="info">
         <strong>${n.titulo}</strong>
-        <span>${n.categoria} · ${fmtData(n.created_at)}</span>
+        <span>${n.categoria} · ${fmtData(n.created_at)} ${!publicado ? '<span class="tag-despublicado">Despublicado</span>' : ''}</span>
         <p style="margin-top:6px;font-size:13px;color:#555;">${n.descricao}</p>
       </div>
       <div class="admin-item-actions">
         <button data-edit="${n.id}">Editar</button>
-        <button class="danger" data-del="${n.id}">Excluir</button>
+        ${acoesPublicacao('noticias', n.id, publicado)}
+        <button class="danger" data-del="${n.id}">Excluir definitivo</button>
       </div>`;
     lista.appendChild(el);
   });
 
-  lista.querySelectorAll('[data-del]').forEach(b => b.addEventListener('click', async () => {
-    if (!confirm('Excluir esta notícia?')) return;
-    await sb.from('noticias').delete().eq('id', b.dataset.del);
-    carregarNoticias();
-  }));
+  ligarAcoesPublicacao(lista, 'noticias', carregarNoticias);
   lista.querySelectorAll('[data-edit]').forEach(b => b.addEventListener('click', () => {
     const item = data.find(x => x.id === b.dataset.edit);
     document.getElementById('n-categoria').value = item.categoria;
@@ -89,6 +120,7 @@ async function carregarNoticias() {
     EDITING_NOTICIA_ID = item.id;
     document.getElementById('btnPostarNoticia').textContent = 'Salvar edição';
     document.getElementById('btnCancelarNoticia').style.display = 'inline-block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }));
 }
 
@@ -99,9 +131,11 @@ document.getElementById('btnPostarNoticia').addEventListener('click', async () =
   if (!categoria || !titulo || !descricao) { alert('Preencha categoria, título e descrição.'); return; }
 
   if (EDITING_NOTICIA_ID) {
-    await sb.from('noticias').update({ categoria, titulo, descricao }).eq('id', EDITING_NOTICIA_ID);
+    const { error } = await sb.from('noticias').update({ categoria, titulo, descricao }).eq('id', EDITING_NOTICIA_ID);
+    if (error) { alert('Erro ao salvar edição: ' + error.message); return; }
   } else {
-    await sb.from('noticias').insert({ categoria, titulo, descricao, created_by: CURRENT_USER.id });
+    const { error } = await sb.from('noticias').insert({ categoria, titulo, descricao, created_by: CURRENT_USER.id });
+    if (error) { alert('Erro ao postar notícia: ' + error.message); return; }
   }
   document.getElementById('n-categoria').value = '';
   document.getElementById('n-titulo').value = '';
@@ -131,23 +165,21 @@ async function carregarGaleria() {
     return;
   }
   data.forEach(g => {
+    const publicado = g.publicado !== false;
     const el = document.createElement('div');
-    el.className = 'admin-item';
+    el.className = 'admin-item' + (publicado ? '' : ' despublicado');
     el.innerHTML = `
       <div class="info">
         <img src="${g.image_url}" alt="">
-        <span>${g.legenda || ''}</span>
+        <span>${g.legenda || ''} ${!publicado ? '<span class="tag-despublicado">Despublicado</span>' : ''}</span>
       </div>
       <div class="admin-item-actions">
-        <button class="danger" data-del="${g.id}">Excluir</button>
+        ${acoesPublicacao('galeria', g.id, publicado)}
+        <button class="danger" data-del="${g.id}">Excluir definitivo</button>
       </div>`;
     lista.appendChild(el);
   });
-  lista.querySelectorAll('[data-del]').forEach(b => b.addEventListener('click', async () => {
-    if (!confirm('Excluir esta foto?')) return;
-    await sb.from('galeria').delete().eq('id', b.dataset.del);
-    carregarGaleria();
-  }));
+  ligarAcoesPublicacao(lista, 'galeria', carregarGaleria);
 }
 
 document.getElementById('btnPostarGaleria').addEventListener('click', async () => {
@@ -160,7 +192,8 @@ document.getElementById('btnPostarGaleria').addEventListener('click', async () =
   if (upErr) { alert('Erro ao enviar a foto: ' + upErr.message); return; }
 
   const { data: pub } = sb.storage.from('galeria').getPublicUrl(nomeArquivo);
-  await sb.from('galeria').insert({ image_url: pub.publicUrl, legenda, created_by: CURRENT_USER.id });
+  const { error } = await sb.from('galeria').insert({ image_url: pub.publicUrl, legenda, created_by: CURRENT_USER.id });
+  if (error) { alert('Erro ao salvar na galeria: ' + error.message); return; }
 
   document.getElementById('g-arquivo').value = '';
   document.getElementById('g-legenda').value = '';
@@ -177,24 +210,22 @@ async function carregarDownloads() {
     return;
   }
   data.forEach(d => {
+    const publicado = d.publicado !== false;
     const el = document.createElement('div');
-    el.className = 'admin-item';
+    el.className = 'admin-item' + (publicado ? '' : ' despublicado');
     el.innerHTML = `
       <div class="info">
         <strong>${d.titulo}</strong>
-        <span>${d.descricao || ''}</span><br>
+        <span>${d.descricao || ''} ${!publicado ? '<span class="tag-despublicado">Despublicado</span>' : ''}</span><br>
         <a href="${d.file_url}" target="_blank" style="font-size:12px;">Ver arquivo →</a>
       </div>
       <div class="admin-item-actions">
-        <button class="danger" data-del="${d.id}">Excluir</button>
+        ${acoesPublicacao('downloads', d.id, publicado)}
+        <button class="danger" data-del="${d.id}">Excluir definitivo</button>
       </div>`;
     lista.appendChild(el);
   });
-  lista.querySelectorAll('[data-del]').forEach(b => b.addEventListener('click', async () => {
-    if (!confirm('Excluir este documento?')) return;
-    await sb.from('downloads').delete().eq('id', b.dataset.del);
-    carregarDownloads();
-  }));
+  ligarAcoesPublicacao(lista, 'downloads', carregarDownloads);
 }
 
 document.getElementById('btnPostarDownload').addEventListener('click', async () => {
@@ -208,7 +239,8 @@ document.getElementById('btnPostarDownload').addEventListener('click', async () 
   if (upErr) { alert('Erro ao enviar o arquivo: ' + upErr.message); return; }
 
   const { data: pub } = sb.storage.from('downloads').getPublicUrl(nomeArquivo);
-  await sb.from('downloads').insert({ titulo, descricao, file_url: pub.publicUrl, created_by: CURRENT_USER.id });
+  const { error } = await sb.from('downloads').insert({ titulo, descricao, file_url: pub.publicUrl, created_by: CURRENT_USER.id });
+  if (error) { alert('Erro ao salvar o download: ' + error.message); return; }
 
   document.getElementById('d-arquivo').value = '';
   document.getElementById('d-titulo').value = '';
@@ -237,21 +269,21 @@ async function carregarApoios() {
     return;
   }
   data.forEach(a => {
+    const publicado = a.publicado !== false;
     const el = document.createElement('div');
-    el.className = 'admin-item';
+    el.className = 'admin-item' + (publicado ? '' : ' despublicado');
     const midia = a.tipo === 'foto'
       ? `<img src="${a.midia_url}" alt="">`
       : `<span style="font-size:12px;">🎬 vídeo: <a href="${a.midia_url}" target="_blank">${a.midia_url}</a></span>`;
     el.innerHTML = `
-      <div class="info">${midia}<span>${a.legenda || ''}</span></div>
-      <div class="admin-item-actions"><button class="danger" data-del="${a.id}">Excluir</button></div>`;
+      <div class="info">${midia}<span>${a.legenda || ''} ${!publicado ? '<span class="tag-despublicado">Despublicado</span>' : ''}</span></div>
+      <div class="admin-item-actions">
+        ${acoesPublicacao('apoios', a.id, publicado)}
+        <button class="danger" data-del="${a.id}">Excluir definitivo</button>
+      </div>`;
     lista.appendChild(el);
   });
-  lista.querySelectorAll('[data-del]').forEach(b => b.addEventListener('click', async () => {
-    if (!confirm('Excluir este apoio?')) return;
-    await sb.from('apoios').delete().eq('id', b.dataset.del);
-    carregarApoios();
-  }));
+  ligarAcoesPublicacao(lista, 'apoios', carregarApoios);
 }
 
 document.getElementById('btnPostarApoio').addEventListener('click', async () => {
@@ -265,11 +297,13 @@ document.getElementById('btnPostarApoio').addEventListener('click', async () => 
     const { error: upErr } = await sb.storage.from('apoios').upload(nomeArquivo, file);
     if (upErr) { alert('Erro ao enviar a foto: ' + upErr.message); return; }
     const { data: pub } = sb.storage.from('apoios').getPublicUrl(nomeArquivo);
-    await sb.from('apoios').insert({ tipo, midia_url: pub.publicUrl, legenda, created_by: CURRENT_USER.id });
+    const { error } = await sb.from('apoios').insert({ tipo, midia_url: pub.publicUrl, legenda, created_by: CURRENT_USER.id });
+    if (error) { alert('Erro ao salvar o apoio: ' + error.message); return; }
   } else {
     const link = document.getElementById('a-youtube').value.trim();
     if (!link || !youtubeEmbedUrl(link)) { alert('Cole um link válido do YouTube.'); return; }
-    await sb.from('apoios').insert({ tipo, midia_url: link, legenda, created_by: CURRENT_USER.id });
+    const { error } = await sb.from('apoios').insert({ tipo, midia_url: link, legenda, created_by: CURRENT_USER.id });
+    if (error) { alert('Erro ao salvar o apoio: ' + error.message); return; }
   }
 
   document.getElementById('a-arquivo').value = '';
