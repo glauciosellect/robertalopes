@@ -163,6 +163,13 @@ document.addEventListener('DOMContentLoaded', function () {
       const descricao = dados.get('descricao') || '';
       const bairroCidade = dados.get('bairroCidade') || '';
 
+      // Envia a solicitação por e-mail para o gabinete
+      fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nome, assunto, descricao, bairroCidade, protocolo })
+      }).catch(() => {});
+
       document.getElementById('protocoloNumero').textContent = protocolo;
       document.getElementById('protocoloResultado').style.display = 'block';
 
