@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Painel Administrativo | Roberta Lopes</title>
+<meta name="robots" content="noindex,nofollow">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="admin.css">
+</head>
+<body>
+<div class="admin-shell">
+  <aside class="admin-sidebar">
+    <h2>Roberta Lopes</h2>
+    <span class="role-badge" id="roleBadge">carregando...</span>
+    <nav class="admin-nav">
+      <button data-panel="noticias" class="active">📰 Notícias</button>
+      <button data-panel="galeria">🖼️ Galeria</button>
+      <button data-panel="downloads">📄 Downloads</button>
+      <button data-panel="apoios">🤝 Apoios</button>
+      <button data-panel="colaboradores" id="navColaboradores" style="display:none;">👥 Colaboradores</button>
+    </nav>
+    <button class="logout" id="btnLogout">Sair</button>
+  </aside>
+
+  <main class="admin-main">
+
+    <!-- NOTÍCIAS -->
+    <section class="admin-panel active" id="panel-noticias">
+      <h1>Notícias</h1>
+      <div class="admin-form-box">
+        <div class="admin-form-grid">
+          <div class="full">
+            <label>Categoria (ex: Segurança)</label>
+            <input type="text" id="n-categoria">
+          </div>
+          <div class="full">
+            <label>Título</label>
+            <input type="text" id="n-titulo">
+          </div>
+          <div class="full">
+            <label>Descrição</label>
+            <textarea id="n-descricao" rows="3"></textarea>
+          </div>
+        </div>
+        <button class="admin-btn" id="btnPostarNoticia" style="margin-top:14px;width:auto;padding:12px 28px;">Postar</button>
+        <button class="admin-btn secondary" id="btnCancelarNoticia" style="display:none;margin-top:14px;width:auto;padding:12px 28px;margin-left:10px;">Cancelar edição</button>
+      </div>
+      <div class="admin-list" id="lista-noticias"></div>
+    </section>
+
+    <!-- GALERIA -->
+    <section class="admin-panel" id="panel-galeria">
+      <h1>Galeria</h1>
+      <div class="admin-form-box">
+        <div class="admin-form-grid">
+          <div class="full">
+            <label>Foto</label>
+            <input type="file" id="g-arquivo" accept="image/*">
+          </div>
+          <div class="full">
+            <label>Legenda (opcional)</label>
+            <input type="text" id="g-legenda">
+          </div>
+        </div>
+        <button class="admin-btn" id="btnPostarGaleria" style="margin-top:14px;width:auto;padding:12px 28px;">Anexar foto</button>
+      </div>
+      <div class="admin-list" id="lista-galeria"></div>
+    </section>
+
+    <!-- DOWNLOADS -->
+    <section class="admin-panel" id="panel-downloads">
+      <h1>Downloads</h1>
+      <div class="admin-form-box">
+        <div class="admin-form-grid">
+          <div class="full">
+            <label>Título do documento</label>
+            <input type="text" id="d-titulo">
+          </div>
+          <div class="full">
+            <label>Descrição (opcional)</label>
+            <input type="text" id="d-descricao">
+          </div>
+          <div class="full">
+            <label>Arquivo (PDF ou outro documento público)</label>
+            <input type="file" id="d-arquivo">
+          </div>
+        </div>
+        <button class="admin-btn" id="btnPostarDownload" style="margin-top:14px;width:auto;padding:12px 28px;">Anexar documento</button>
+      </div>
+      <div class="admin-list" id="lista-downloads"></div>
+    </section>
+
+    <!-- APOIOS -->
+    <section class="admin-panel" id="panel-apoios">
+      <h1>Apoios</h1>
+      <div class="admin-form-box">
+        <div class="admin-form-grid">
+          <div class="full">
+            <label>Tipo</label>
+            <select id="a-tipo">
+              <option value="foto">Foto</option>
+              <option value="video">Vídeo do YouTube</option>
+            </select>
+          </div>
+          <div class="full" id="a-foto-wrap">
+            <label>Foto</label>
+            <input type="file" id="a-arquivo" accept="image/*">
+          </div>
+          <div class="full" id="a-video-wrap" style="display:none;">
+            <label>Link do vídeo no YouTube</label>
+            <input type="text" id="a-youtube" placeholder="https://www.youtube.com/watch?v=...">
+            <p style="font-size:12px;color:#8a7360;margin-top:6px;">Suba o vídeo no YouTube (pode ser "não listado"), copie o link e cole aqui. O site mostra o vídeo automaticamente.</p>
+          </div>
+          <div class="full">
+            <label>Legenda</label>
+            <input type="text" id="a-legenda">
+          </div>
+        </div>
+        <button class="admin-btn" id="btnPostarApoio" style="margin-top:14px;width:auto;padding:12px 28px;">Postar</button>
+      </div>
+      <div class="admin-list" id="lista-apoios"></div>
+    </section>
+
+    <!-- COLABORADORES -->
+    <section class="admin-panel" id="panel-colaboradores">
+      <h1>Colaboradores</h1>
+      <div class="admin-form-box">
+        <div class="admin-form-grid">
+          <div class="full">
+            <label>E-mail para convidar</label>
+            <input type="email" id="c-email" placeholder="colaborador@email.com">
+          </div>
+        </div>
+        <button class="admin-btn" id="btnConvidar" style="margin-top:14px;width:auto;padding:12px 28px;">Enviar convite</button>
+      </div>
+      <div class="admin-list" id="lista-colaboradores"></div>
+    </section>
+
+  </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="../js/supabase-config.js"></script>
+<script src="admin.js"></script>
+</body>
+</html>
