@@ -78,8 +78,7 @@ section{padding:96px 0;}
   padding:18px 24px;max-width:1180px;margin:0 auto;
 }
 .logo{font-family:var(--serif);font-size:24px;font-weight:700;color:var(--cafe);display:flex;align-items:center;gap:12px;line-height:1;}
-.logo-img{width:44px;height:44px;border-radius:50%;object-fit:cover;box-shadow:var(--shadow);flex:none;}
-.logo-text{display:flex;flex-direction:column;}
+.logo img{height:48px;width:auto;object-fit:contain;flex:none;}
 .logo span{font-family:var(--sans);font-size:11px;font-weight:600;letter-spacing:3px;color:var(--moca);text-transform:uppercase;margin-top:4px;}
 .nav-links{display:flex;gap:34px;align-items:center;}
 .nav-links a{font-size:14px;font-weight:600;color:var(--text);position:relative;padding:4px 0;}
