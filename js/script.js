@@ -187,4 +187,151 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
+  // ---------------------------------------------------------
+  // Modal rápido "Junte-se a Nós" — Nome, E-mail, WhatsApp, Mensagem
+  // ---------------------------------------------------------
+  const joinOverlay = document.getElementById('joinModalOverlay');
+  const joinClose = document.getElementById('joinModalClose');
+  const joinForm = document.getElementById('joinModalForm');
+  const joinFeedback = document.getElementById('joinModalFeedback');
+  const joinTriggers = document.querySelectorAll('.js-join-modal');
+
+  function openJoinModal(e) {
+    if (e) e.preventDefault();
+    if (!joinOverlay) return;
+    joinOverlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeJoinModal() {
+    if (!joinOverlay) return;
+    joinOverlay.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  joinTriggers.forEach(el => el.addEventListener('click', openJoinModal));
+  if (joinClose) joinClose.addEventListener('click', closeJoinModal);
+  if (joinOverlay) joinOverlay.addEventListener('click', e => {
+    if (e.target === joinOverlay) closeJoinModal();
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeJoinModal();
+  });
+
+  if (joinForm) {
+    joinForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      const btn = joinForm.querySelector('button[type="submit"]');
+      const original = btn.textContent;
+      btn.disabled = true;
+      btn.textContent = 'Enviando...';
+
+      const dados = new FormData(joinForm);
+      const nome = dados.get('nome') || '';
+      const email = dados.get('email') || '';
+      const whatsapp = dados.get('whatsapp') || '';
+      const mensagem = dados.get('mensagem') || '';
+
+      fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          nome,
+          email,
+          whatsapp,
+          assunto: 'Junte-se a Nós (site)',
+          descricao: mensagem || 'Cadastro rápido pelo botão Junte-se a Nós (sem mensagem livre).'
+        })
+      })
+        .then(() => {
+          if (joinFeedback) {
+            joinFeedback.textContent = 'Recebemos seus dados! Em breve o gabinete entra em contato.';
+            joinFeedback.style.display = 'block';
+          }
+          joinForm.reset();
+          joinForm.style.display = 'none';
+        })
+        .catch(() => {
+          if (joinFeedback) {
+            joinFeedback.textContent = 'Não foi possível enviar agora. Tente novamente em instantes.';
+            joinFeedback.style.display = 'block';
+          }
+        })
+        .finally(() => {
+          btn.disabled = false;
+          btn.textContent = original;
+          setTimeout(() => {
+            closeJoinModal();
+            joinForm.style.display = '';
+            if (joinFeedback) joinFeedback.style.display = 'none';
+          }, 2800);
+        });
+    });
+  }
+
+  // ---------------------------------------------------------
+  // Movimento — scroll reveal + contadores animados
+  // ---------------------------------------------------------
+  const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const revealSelectors = [
+    '.section-head', '.pilar-card', '.golaco-card', '.extra-card', '.stat-card',
+    '.acoes-card', '.pl-card', '.noticia-card', '.download-card', '.agenda-item',
+    '.rede-card', '.apoio-card', '.video-card', '.recursos-row', '.tl-item',
+    '.hero-copy', '.hero-media', '.sobre-media', '.sobre-copy', '.cadastro-box',
+    '.contato-info', '.solicitacao-box', '.cta-badge', '.recursos-intro'
+  ];
+
+  const revealGroups = {};
+  revealSelectors.forEach(sel => {
+    document.querySelectorAll(sel).forEach(el => {
+      if (el.hasAttribute('data-reveal')) return;
+      el.setAttribute('data-reveal', '');
+      const parent = el.parentElement;
+      const key = sel + '::' + (parent ? Array.prototype.indexOf.call(parent.children, el) : 0);
+      revealGroups[sel] = revealGroups[sel] || new Map();
+      if (!revealGroups[sel].has(parent)) revealGroups[sel].set(parent, 0);
+      const idx = revealGroups[sel].get(parent);
+      revealGroups[sel].set(parent, idx + 1);
+      el.style.transitionDelay = prefersReducedMotion ? '0s' : Math.min(idx * 80, 400) + 'ms';
+    });
+  });
+
+  const revealTargets = document.querySelectorAll('[data-reveal]');
+
+  function animateCount(el) {
+    const raw = el.textContent.trim();
+    if (!/^[0-9][0-9.]*$/.test(raw)) return; // só números "puros" tipo 7.924 ou 22
+    const target = parseInt(raw.replace(/\./g, ''), 10);
+    if (!target || target <= 0) return;
+    const hasThousandDot = raw.indexOf('.') !== -1;
+    const duration = 1400;
+    const start = performance.now();
+    function tick(now) {
+      const progress = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const current = Math.floor(eased * target);
+      el.textContent = hasThousandDot ? current.toLocaleString('pt-BR') : String(current);
+      if (progress < 1) requestAnimationFrame(tick);
+      else el.textContent = raw;
+    }
+    requestAnimationFrame(tick);
+  }
+
+  if (prefersReducedMotion || !('IntersectionObserver' in window)) {
+    revealTargets.forEach(el => el.classList.add('is-visible'));
+  } else {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          if (entry.target.classList.contains('stat-card') || entry.target.classList.contains('hero-copy')) {
+            entry.target.querySelectorAll('strong').forEach(animateCount);
+          }
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+    revealTargets.forEach(el => io.observe(el));
+  }
+
 });

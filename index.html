@@ -6,7 +6,7 @@
 <title>Roberta Lopes | Pré-candidata a Deputada Estadual</title>
 <meta name="description" content="Roberta Lopes — Vereadora mais votada por mulheres em Juiz de Fora, pré-candidata a Deputada Estadual pela Zona da Mata Mineira. Fé, família, segurança e representatividade.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Open+Sans:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Roboto:wght@400;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -25,7 +25,7 @@
       <a href="#contato">Contato</a>
     </nav>
     <div class="header-cta">
-      <a href="#cadastro" class="btn btn-primary" style="padding:12px 26px;">Junte-se a Nós</a>
+      <a href="#cadastro" class="btn btn-primary js-join-modal" style="padding:12px 26px;">Junte-se a Nós</a>
       <button class="burger" id="burgerBtn" aria-label="Abrir menu"><span></span><span></span><span></span></button>
     </div>
   </div>
@@ -47,7 +47,7 @@
   <a href="#galeria">Galeria</a>
   <a href="#downloads">Downloads</a>
   <a href="#agenda">Agenda</a>
-  <a href="#cadastro">Junte-se a Nós</a>
+  <a href="#cadastro" class="js-join-modal">Junte-se a Nós</a>
   <a href="#redes">Redes Sociais</a>
   <a href="#apoios">Apoios</a>
   <a href="#contato">Contato</a>
@@ -61,7 +61,7 @@
       <h1>Uma voz conservadora <em>para Minas Gerais.</em></h1>
       <p class="lead">Vereadora mais votada por mulheres em Juiz de Fora, Roberta Lopes leva à Assembleia Legislativa a defesa da vida, da família, da segurança e da Zona da Mata Mineira.</p>
       <div class="hero-actions">
-        <a href="#cadastro" class="btn btn-primary">Junte-se a Nós</a>
+        <a href="#cadastro" class="btn btn-primary js-join-modal">Junte-se a Nós</a>
         <a href="#sobre" class="btn btn-outline">Conheça a Roberta</a>
       </div>
       <div class="hero-stats">
@@ -206,8 +206,10 @@
 <section class="cta-strip">
   <div class="container">
     <h2>O próximo passo é a Assembleia Legislativa de Minas Gerais</h2>
-    <p>Sua participação faz a diferença. Cadastre-se e acompanhe de perto a caminhada rumo a 2026.</p>
-    <a href="#cadastro" class="btn btn-blue">Quero Fazer Parte</a>
+    <p>Sua participação faz a diferença. Vote 22032 e acompanhe de perto a caminhada rumo a 2026.</p>
+    <a href="#cadastro" class="cta-badge js-join-modal" aria-label="Junte-se a Nós — Vote Roberta Lopes 22032">
+      <img src="images/vote-roberta-22032.webp" alt="Vote Roberta Lopes 22032">
+    </a>
   </div>
 </section>
 
@@ -690,7 +692,7 @@
         <a href="#galeria">Galeria</a>
         <a href="#downloads">Downloads</a>
         <a href="#agenda">Agenda</a>
-        <a href="#cadastro">Junte-se a Nós</a>
+        <a href="#cadastro" class="js-join-modal">Junte-se a Nós</a>
         <a href="#redes">Redes Sociais</a>
         <a href="#apoios">Apoios</a>
         <a href="#contato">Contato</a>
@@ -712,6 +714,23 @@
 <div class="golaco-lightbox" id="golacoLightbox">
   <button class="golaco-lightbox-close" id="golacoLightboxClose" aria-label="Fechar">&times;</button>
   <img src="" alt="" id="golacoLightboxImg">
+</div>
+
+<!-- ===================== MODAL RÁPIDO: JUNTE-SE A NÓS ===================== -->
+<div class="join-modal-overlay" id="joinModalOverlay">
+  <div class="join-modal" role="dialog" aria-modal="true" aria-labelledby="joinModalTitle">
+    <button class="join-modal-close" id="joinModalClose" aria-label="Fechar">&times;</button>
+    <h3 id="joinModalTitle">Junte-se a Nós</h3>
+    <p>Deixe seus dados e acompanhe de perto a caminhada de Roberta Lopes rumo a 2026.</p>
+    <form id="joinModalForm">
+      <input type="text" name="nome" placeholder="Nome completo" required>
+      <input type="email" name="email" placeholder="E-mail" required>
+      <input type="tel" name="whatsapp" placeholder="WhatsApp" required>
+      <textarea name="mensagem" placeholder="Mensagem (opcional)" rows="3"></textarea>
+      <button type="submit" class="btn btn-yellow" style="width:100%;">Enviar</button>
+    </form>
+    <p class="join-modal-feedback" id="joinModalFeedback" style="display:none;"></p>
+  </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>

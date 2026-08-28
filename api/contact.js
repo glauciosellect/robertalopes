@@ -1,4 +1,4 @@
-// Vercel Function — envia o formulário de Contato/Solicitação por e-mail via Resend.
+// Vercel Function — envia o formulário de Contato/Solicitação/Cadastro por e-mail via Resend.
 // Usa a variável de ambiente RESEND_API_KEY configurada no painel da Vercel.
 
 module.exports = async (req, res) => {
@@ -8,7 +8,7 @@ module.exports = async (req, res) => {
   }
 
   try {
-    const { nome, email, bairroCidade, assunto, descricao, protocolo } = req.body || {};
+    const { nome, email, whatsapp, bairroCidade, assunto, descricao, protocolo } = req.body || {};
 
     if (!nome || !descricao) {
       res.status(400).json({ error: 'Nome e descrição são obrigatórios.' });
@@ -25,6 +25,7 @@ module.exports = async (req, res) => {
       ${assunto ? `<p><strong>Assunto:</strong> ${assunto}</p>` : ''}
       <p><strong>Descrição:</strong><br>${String(descricao).replace(/\n/g, '<br>')}</p>
       ${email ? `<p><strong>E-mail do solicitante:</strong> ${email}</p>` : ''}
+      ${whatsapp ? `<p><strong>WhatsApp do solicitante:</strong> ${whatsapp}</p>` : ''}
     `;
 
     const resendResp = await fetch('https://api.resend.com/emails', {
