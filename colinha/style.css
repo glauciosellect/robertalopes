@@ -17,3 +17,6 @@ footer{background:#fff;color:#56615a;padding:18px 12px 20px;min-height:0;border-
 .alter-button[aria-pressed="true"]{background:#194e36}
 @media(max-width:650px){.row-actions{grid-column:1/-1}.row-actions .digits{grid-column:auto}}
 @media(max-width:370px){.row-actions{gap:6px}.row-actions .digit{width:33px}.alter-button{padding:0 9px}}
+
+/* botao para retornar ao site principal, na tela final da colinha */
+.back-to-site{margin-top:28px;padding-top:24px;border-top:1px solid #e5ebe5}
