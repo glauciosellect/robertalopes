@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#071c54" />
+    <meta name="description" content="Crie sua foto de apoio à campanha da Roberta Lopes em formatos prontos para redes sociais." />
+    <title>Foto de apoio | Roberta Lopes 22032</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700;800;900&family=Roboto+Condensed:wght@700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <a class="wordmark" href="./" aria-label="Roberta Lopes 22032">
+          <img src="assets/roberta-logo-header.png" alt="Roberta Lopes · Deputada Estadual" />
+        </a>
+        <div class="topbar-meta"><span class="dot"></span> Personalizador de apoio</div>
+      </header>
+
+      <section class="intro">
+        <div>
+          <p class="eyebrow">ROBERTA LOPES · DEPUTADA ESTADUAL</p>
+          <h1>Crie sua foto<br /><span>de apoio.</span></h1>
+          <p class="intro-copy">Envie uma foto, ajuste o enquadramento e baixe uma arte pronta para compartilhar.</p>
+        </div>
+        <div class="number-lockup" aria-label="Número eleitoral 22032"><span>22032</span><small>um jeito simples de participar</small></div>
+      </section>
+
+      <section class="workspace" aria-label="Personalizador de foto">
+        <div class="controls-card">
+          <div class="step-row"><span class="step active">01 <b>ENVIAR</b></span><span class="step">02 <b>AJUSTAR</b></span><span class="step">03 <b>BAIXAR</b></span></div>
+
+          <div class="control-section">
+            <div class="section-heading"><span class="section-index">01</span><div><h2>Escolha o formato</h2><p>Escolha Stories ou Perfil para publicar sua imagem.</p></div></div>
+            <div class="format-grid" role="group" aria-label="Formato da arte">
+              <button class="format-button selected" data-format="story"><strong>Stories</strong><span>720 × 1280</span></button>
+              <button class="format-button" data-format="profile"><strong>Perfil</strong><span>1254 × 1254</span></button>
+            </div>
+          </div>
+
+          <div class="control-section">
+            <div class="section-heading"><span class="section-index">02</span><div><h2>Adicione sua foto</h2><p>Escolha uma imagem em que seu rosto apareça bem.</p></div></div>
+            <label class="upload-button" for="photo-input"><span class="upload-icon">＋</span><span>Enviar minha foto</span><input id="photo-input" type="file" accept="image/*" /></label>
+            <p class="file-note" id="file-note">JPG ou PNG · a foto fica no seu navegador.</p>
+          </div>
+
+          <div class="control-section adjustment-section">
+            <div class="section-heading"><span class="section-index">03</span><div><h2>Ajuste o enquadramento</h2><p>Arraste a foto e use o controle de zoom.</p></div></div>
+            <div class="zoom-row"><label for="zoom">Zoom</label><input id="zoom" type="range" min="1" max="3" step="0.01" value="1" /><output id="zoom-value">100%</output></div>
+            <button class="secondary-button" id="reset-button" type="button">↺ Recomeçar ajuste</button>
+          </div>
+
+          <div class="privacy-note"><span>✓</span><p>A imagem é composta localmente. Nenhuma foto é enviada para o servidor nesta versão.</p></div>
+        </div>
+
+        <div class="preview-column">
+          <div class="preview-label"><span>PRÉVIA</span><span id="dimension-label">STORIES · 720 × 1280</span></div>
+          <div class="canvas-frame" id="canvas-frame"><canvas id="art-canvas" aria-label="Prévia da foto personalizada"></canvas><div class="drag-hint" id="drag-hint">Arraste para ajustar</div></div>
+          <div class="preview-actions"><button class="download-button" id="download-button" type="button"><span>↓</span> Baixar minha arte</button><p id="status" aria-live="polite">Envie uma foto para começar.</p><div class="save-preview" id="save-preview" hidden><p>Se o Safari não salvar automaticamente, toque e segure a imagem abaixo e escolha “Salvar Imagem”.</p><img id="save-preview-image" alt="Arte pronta para salvar" /></div></div>
+        </div>
+      </section>
+
+      <footer class="footer"><span>ROBERTA LOPES · 22032</span><span class="footer-credit">Desenvolvido por: <img src="assets/plugin-logo.jpg" alt="Plugin Marketing" /></span></footer>
+    </main>
+    <script src="app.js"></script>
+  </body>
+</html>

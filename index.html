@@ -140,6 +140,7 @@
     font-family:var(--rotulo);font-size:17px;font-weight:600;
     box-shadow:0 9px 22px rgba(5,131,25,.3);transition:background .15s;
   }
+  .colinha-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:16px;}
   .colinha-cta:hover{background:var(--verde-sombra);}
   .colinha-cta span{
     display:grid;place-items:center;background:var(--verde-sombra);
@@ -568,6 +569,7 @@
       <a href="#alianca">Aliança</a>
       <a href="#trajetoria">Trajetória</a>
       <a href="/colinha/?inicio=formato">Colinha</a>
+      <a href="/personalizar/">Foto de apoio</a>
     </nav>
     <div class="header-cta">
       <a href="#cadastro" class="btn btn-amarelo" style="padding:12px 24px;" onclick="abrirCadastroModal();return false;">Junte-se a Nós</a>
@@ -594,7 +596,10 @@
   <div class="container">
     <h2>Crie sua <strong>colinha digital</strong></h2>
     <p>Escolha o formato, complete seus votos se desejar e salve a imagem pronta para compartilhar.</p>
-    <a href="/colinha/?inicio=formato" class="colinha-cta">Escolha seus candidatos <span aria-hidden="true">→</span></a>
+    <div class="colinha-actions">
+      <a href="/colinha/?inicio=formato" class="colinha-cta">Escolha seus candidatos <span aria-hidden="true">→</span></a>
+      <a href="/personalizar/" class="colinha-cta">Personalize sua imagem <span aria-hidden="true">→</span></a>
+    </div>
   </div>
 </section>
 
@@ -793,6 +798,7 @@
         <a href="#propostas">Propostas</a>
         <a href="#trajetoria">Trajetória</a>
         <a href="/colinha/?inicio=formato">Colinha digital</a>
+        <a href="/personalizar/">Foto de apoio</a>
       </div>
       <div class="footer-col" data-reveal>
         <h5>Contato</h5>
