@@ -140,7 +140,10 @@
     font-family:var(--rotulo);font-size:17px;font-weight:600;
     box-shadow:0 9px 22px rgba(5,131,25,.3);transition:background .15s;
   }
-  .colinha-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:16px;}
+  .colinha-actions{display:flex;flex-direction:column;align-items:center;gap:16px;}
+  .colinha-actions .colinha-cta{width:min(100%,320px);justify-content:space-between;}
+  .colinha-social{margin-top:48px;font-family:var(--corpo);font-size:16px;color:var(--grafite-suave);}
+  .colinha-social a{color:var(--verde-noturno);font-weight:800;text-decoration:none;}
   .colinha-cta:hover{background:var(--verde-sombra);}
   .colinha-cta span{
     display:grid;place-items:center;background:var(--verde-sombra);
@@ -594,12 +597,15 @@
 <!-- ===================== COLINHA DIGITAL ===================== -->
 <section class="colinha-promo">
   <div class="container">
-    <h2>Crie sua <strong>colinha digital</strong></h2>
-    <p>Escolha o formato, complete seus votos se desejar e salve a imagem pronta para compartilhar.</p>
+    <h2>Faça sua <strong>colinha</strong> ou personalize sua imagem para o Instagram</h2>
+    <p>Escolha uma das opções abaixo para criar sua arte e compartilhar.</p>
     <div class="colinha-actions">
-      <a href="/colinha/?inicio=formato" class="colinha-cta">Escolha seus candidatos <span aria-hidden="true">→</span></a>
+      <a href="/colinha/?inicio=formato" class="colinha-cta">Faça sua colinha <span aria-hidden="true">→</span></a>
       <a href="/personalizar/" class="colinha-cta">Personalize sua imagem <span aria-hidden="true">→</span></a>
+      <a href="https://chat.whatsapp.com/L4vstOSj9OYJf4j61Nvpc9" class="colinha-cta" target="_blank" rel="noopener noreferrer">Entrar no Grupo da Tropa 22 <span aria-hidden="true">→</span></a>
+      <a href="https://wa.me/5532998560022?text=Ol%C3%A1%21%20Gostaria%20de%20solicitar%20material%20da%20campanha." class="colinha-cta" target="_blank" rel="noopener noreferrer">Solicitar material da campanha <span aria-hidden="true">→</span></a>
     </div>
+    <div class="colinha-social">Acompanhe a Roberta nas redes: <a href="https://www.instagram.com/robertalopesdm/" target="_blank" rel="noopener noreferrer">@robertalopesdm ↗</a></div>
   </div>
 </section>
 

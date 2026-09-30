@@ -20,3 +20,5 @@ footer{background:#fff;color:#56615a;padding:18px 12px 20px;min-height:0;border-
 
 /* botao para retornar ao site principal, na tela final da colinha */
 .back-to-site{margin-top:28px;padding-top:24px;border-top:1px solid #e5ebe5}
+
+.site-title{color:#137d45;font-size:13px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;margin-bottom:18px}.home-actions,.support-actions{display:grid;gap:14px;justify-items:center;margin-top:14px}.home-actions .cta,.support-actions .cta{width:min(100%,315px);justify-content:space-between;text-decoration:none}.cta{text-decoration:none}
