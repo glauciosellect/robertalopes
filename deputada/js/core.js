@@ -48,7 +48,7 @@ export async function loadData() {
   try {
     const mod = await Promise.race([
       import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm'),
-      new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), 5000))
+      new Promise((_, rej) => setTimeout(() => rej(new Error("timeout")), 3000))
     ]);
     const sb = mod.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     const [cfg, itens] = await Promise.all([
