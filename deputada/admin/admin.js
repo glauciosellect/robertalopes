@@ -60,6 +60,13 @@ $('#formLogin').addEventListener('submit', async e => {
   if (error) { $('#loginMsg').className = 'msg err'; $('#loginMsg').textContent = 'E-mail ou senha incorretos.'; return; }
   boot();
 });
+$('#esqueci').addEventListener('click', async () => {
+  const email = $('#email').value.trim(), m = $('#loginMsg');
+  if (!email) { m.className = 'msg err'; m.textContent = 'Digite seu e-mail no campo acima primeiro.'; return; }
+  const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo: location.origin + '/admin/set-password.html' });
+  m.className = 'msg ' + (error ? 'err' : 'ok');
+  m.textContent = error ? 'Não foi possível enviar o e-mail de redefinição.' : 'Enviamos um link de redefinição de senha para o seu e-mail. Verifique também o spam.';
+});
 $('#sair').addEventListener('click', async () => { await sb.auth.signOut(); location.reload(); });
 
 function menu() {
