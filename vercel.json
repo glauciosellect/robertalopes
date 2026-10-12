@@ -1,0 +1,7 @@
+{
+  "redirects": [
+    { "source": "/deputada", "destination": "/deputada/", "permanent": false },
+    { "source": "/deputada/prestacao-de-contas", "destination": "/deputada/prestacao-de-contas/", "permanent": false },
+    { "source": "/deputada/admin", "destination": "/deputada/admin/", "permanent": false }
+  ]
+}
