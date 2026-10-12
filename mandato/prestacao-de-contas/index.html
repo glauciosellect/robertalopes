@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Prestação de contas — Roberta Lopes, Deputada Estadual</title>
+<meta name="description" content="Meu mandato é de todos. Recursos, emendas, municípios, projetos, ações e resultados do mandato da Deputada Estadual Roberta Lopes.">
+<meta name="theme-color" content="#03160a">
+<meta name="robots" content="noindex,nofollow"><!-- REMOVER NO LANÇAMENTO -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/mandato.css">
+</head>
+<body>
+<header class="hdr solid" id="hdr">
+  <div class="wrap hdr-in">
+    <a class="brand" href="../" aria-label="Roberta Lopes — início"><b>Roberta <span>Lopes</span></b><small>Deputada Estadual · MG</small></a>
+    <button class="burger" id="burger" aria-label="Abrir menu" aria-expanded="false" aria-controls="nav"><span></span><span></span><span></span></button>
+    <nav class="nav" id="nav" aria-label="Principal">
+      <a href="../#sobre">Sobre</a><a href="../#mandato">Mandato</a><a href="../#assembleia">Na Assembleia</a><a href="./" style="opacity:1">Prestação de contas</a><a href="../#zona-da-mata">Zona da Mata</a>
+      <a class="btn btn-y" href="#" data-wa>Fale comigo</a>
+    </nav>
+  </div>
+</header>
+<main>
+<section class="pg-hero">
+  <div class="wrap">
+    <div class="eyebrow">Prestação de contas</div>
+    <h1 class="hl">Meu mandato <em>é de todos.</em></h1>
+    <p class="lead">Recursos, emendas, municípios, projetos, ações e resultados — tudo aberto para você acompanhar e fiscalizar.</p>
+  </div>
+</section>
+<section style="padding-bottom:20px">
+  <div class="wrap"><div class="dash" id="kpis"></div></div>
+</section>
+<section class="sec" style="padding-top:clamp(40px,6vw,90px)">
+  <div class="wrap">
+    <div class="pg-block" style="margin-top:0">
+      <div class="eyebrow dark">Municípios</div>
+      <h2 style="margin-top:14px">Minas <span style="color:var(--g600)">inteira.</span></h2>
+      <div class="mapa-grid">
+        <div><div class="mapa-box" id="mapaBox"><div class="empty" style="margin:20px">Carregando mapa…</div></div>
+          <div class="mapa-leg"><span><i style="background:var(--g700)"></i>Município com atuação</span><span><i style="background:#8fc59f"></i>Zona da Mata</span><span><i style="background:#d6dccf"></i>Demais municípios</span></div></div>
+        <aside class="mapa-side" id="mapaSide" aria-live="polite"></aside>
+      </div>
+    </div>
+    <div class="pg-block"><div class="eyebrow dark">Emendas</div><h2 style="margin-top:14px">Para onde foi <span style="color:var(--g600)">o recurso.</span></h2><div id="bars" class="bars"></div><div id="tblEmendas" style="margin-top:30px"></div><p class="src" id="srcEmendas"></p></div>
+    <div class="pg-block"><div class="eyebrow dark">Projetos e ações</div><h2 style="margin-top:14px">O que <span style="color:var(--g600)">foi feito.</span></h2><div class="cards" id="cardsProj" style="margin-top:22px"></div></div>
+    <div class="pg-block"><div class="eyebrow dark">Resultados</div><h2 style="margin-top:14px">O que <span style="color:var(--g600)">mudou.</span></h2><div class="cards" id="cardsRes" style="margin-top:22px"></div></div>
+  </div>
+</section>
+<section class="siga"><div class="wrap"><h2>Siga o <span style="color:var(--y)">mandato.</span></h2><div class="siga-row" id="redes"></div></div></section>
+</main>
+<footer class="ftr"><div class="wrap"><div class="ftr-bot"><span>© 2026 Roberta Lopes · Deputada Estadual de Minas Gerais · PL 22032</span><a href="../" style="display:inline;padding:0">← Voltar ao site</a></div></div></footer>
+<script type="module" src="../js/prestacao.js"></script>
+</body>
+</html>
